@@ -1,16 +1,15 @@
 mod btree;
 
 fn main() {
-    let mut btree = btree::Btree::new(10);
+    let mut btree = btree::Btree::new(10000);
 
-    let count = 1000_000;
+    let count = 1_000_000;
 
+    let start = std::time::Instant::now();
     for i in 0..count {
-        let start = std::time::Instant::now();
         btree.insert(i);
-        let end = start.elapsed();
-        println!("Inserting takes: {:?} in micro seconds", end.as_micros() );
     }
+    println!("Inserting {count} elements takes: {:?} seconds", start.elapsed().as_secs() );
 
     for i in 0..count {
         let start = std::time::Instant::now();

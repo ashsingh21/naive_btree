@@ -75,7 +75,7 @@ impl Node {
 pub struct Btree {
     pub root: Option<NodeIndex>,
     order: usize,
-    pub nodes: Vec<Node>, // it probably also needs a free list to use that or maybe find an allocatior online
+    pub nodes: Vec<Node>, // it probably also needs a free list that or maybe use an arena allocator
 }
 
 impl Btree {
@@ -83,7 +83,7 @@ impl Btree {
         Btree {
             root: None,
             order,
-            nodes: Vec::with_capacity(1000),
+            nodes: Vec::with_capacity(100_000_000),
         }
     }
 
@@ -109,9 +109,6 @@ impl Btree {
     }
 
     pub fn insert(&mut self, key: i32) {
-        if key == 15 {
-            println!("inserting 15");
-        }
         match self.root {
             Some(index) => {
                 let root = self.insert_inner(index, key);
@@ -197,6 +194,10 @@ impl Btree {
 
         self.nodes[node_index] = node;
         return None;
+    }
+
+    pub fn num_nodes(&self) -> usize {
+        self.nodes.len()
     }
 }
 
